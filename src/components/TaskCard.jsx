@@ -1,5 +1,6 @@
 import React from "react";
 import { updateTask } from "./Db";
+import { FaCheckCircle, FaSpinner, FaCircle } from "react-icons/fa";
 
 function TaskCard({ task }) {
     const handleStatusChange = async (newStatus) => {
@@ -8,32 +9,22 @@ function TaskCard({ task }) {
     };
 
     return (
-        <div className="bg-white rounded shadow p-4 mb-4 transition transform hover:scale-105 duration-200">
-            <h3 className="text-lg font-semibold text-gray-800">{task.title}</h3>
-            <p className="text-gray-600 mb-4">{task.description}</p>
+        <div className="flex items-center justify-between bg-gray-100 rounded p-3 shadow-sm transition transform hover:scale-105 duration-200">
+            <h3 className="text-md font-medium text-gray-800">{task.title}</h3>
             <div className="flex space-x-2">
                 {task.status !== "To Do" && (
-                    <button
-                        className="bg-yellow-500 text-white py-1 px-3 rounded hover:bg-yellow-600"
-                        onClick={() => handleStatusChange("To Do")}
-                    >
-                        To Do
+                    <button onClick={() => handleStatusChange("To Do")}>
+                        <FaCircle className="text-yellow-500" />
                     </button>
                 )}
                 {task.status !== "In Progress" && (
-                    <button
-                        className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
-                        onClick={() => handleStatusChange("In Progress")}
-                    >
-                        In Progress
+                    <button onClick={() => handleStatusChange("In Progress")}>
+                        <FaSpinner className="text-blue-500" />
                     </button>
                 )}
                 {task.status !== "Completed" && (
-                    <button
-                        className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
-                        onClick={() => handleStatusChange("Completed")}
-                    >
-                        Completed
+                    <button onClick={() => handleStatusChange("Completed")}>
+                        <FaCheckCircle className="text-green-500" />
                     </button>
                 )}
             </div>
