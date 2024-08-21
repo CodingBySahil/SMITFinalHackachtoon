@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { getTasksByStatus, addTask } from "./Db";
 import TaskCard from "./TaskCard";
@@ -24,12 +25,28 @@ function Board() {
     }, []);
 
     const handleAddTask = async () => {
-        if (!newTask.title) return; // Prevent empty task submission
+        if (!newTask.title) return;
         await addTask(newTask);
         setNewTask({ title: "", status: "To Do" });
         setShowForm(false);
         const todo = await getTasksByStatus("To Do");
         setTodoTasks(todo);
+    };
+
+    const handleTaskDelete = (id) => {
+        setTodoTasks(todoTasks.filter(task => task.id !== id));
+        setInProgressTasks(inProgressTasks.filter(task => task.id !== id));
+        setCompletedTasks(completedTasks.filter(task => task.id !== id));
+    };
+
+    const handleTaskUpdate = async () => {
+        const todo = await getTasksByStatus("To Do");
+        const inProgress = await getTasksByStatus("In Progress");
+        const completed = await getTasksByStatus("Completed");
+
+        setTodoTasks(todo);
+        setInProgressTasks(inProgress);
+        setCompletedTasks(completed);
     };
 
     return (
@@ -68,20 +85,20 @@ function Board() {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <TaskColumn title="To Do" tasks={todoTasks} />
-                <TaskColumn title="In Progress" tasks={inProgressTasks} />
-                <TaskColumn title="Completed" tasks={completedTasks} />
+                <TaskColumn title="To Do" tasks={todoTasks} onDelete={handleTaskDelete} onUpdate={handleTaskUpdate} />
+                <TaskColumn title="In Progress" tasks={inProgressTasks} onDelete={handleTaskDelete} onUpdate={handleTaskUpdate} />
+                <TaskColumn title="Completed" tasks={completedTasks} onDelete={handleTaskDelete} onUpdate={handleTaskUpdate} />
             </div>
         </div>
     );
 }
 
-const TaskColumn = ({ title, tasks }) => (
+const TaskColumn = ({ title, tasks, onDelete, onUpdate }) => (
     <div className="bg-white rounded shadow-lg p-4">
         <h2 className="text-xl font-semibold text-blue-700 mb-4">{title}</h2>
         <div className="space-y-2">
             {tasks.map(task => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard key={task.id} task={task} onDelete={onDelete} onUpdate={onUpdate} />
             ))}
         </div>
     </div>
