@@ -1,11 +1,17 @@
+// TaskCard.jsx
 import React from "react";
-import { updateTask } from "./Db";
-import { FaCheckCircle, FaSpinner, FaCircle } from "react-icons/fa";
+import { updateTask, deleteTask } from "./Db";
+import { FaCheckCircle, FaSpinner, FaCircle, FaTrash } from "react-icons/fa";
 
-function TaskCard({ task }) {
+function TaskCard({ task, onDelete, onUpdate }) {
     const handleStatusChange = async (newStatus) => {
         await updateTask(task.id, { status: newStatus });
-        window.location.reload(); // Reload the page to fetch updated tasks
+        onUpdate();
+    };
+
+    const handleDelete = async () => {
+        await deleteTask(task.id);
+        onDelete(task.id);
     };
 
     return (
@@ -13,20 +19,27 @@ function TaskCard({ task }) {
             <h3 className="text-md font-medium text-gray-800">{task.title}</h3>
             <div className="flex space-x-2">
                 {task.status !== "To Do" && (
-                    <button onClick={() => handleStatusChange("To Do")}>
+                    <button className="relative group" onClick={() => handleStatusChange("To Do")}>
                         <FaCircle className="text-yellow-500" />
+                        <span className="tooltip">Move to To Do</span>
                     </button>
                 )}
                 {task.status !== "In Progress" && (
-                    <button onClick={() => handleStatusChange("In Progress")}>
+                    <button className="relative group" onClick={() => handleStatusChange("In Progress")}>
                         <FaSpinner className="text-blue-500" />
+                        <span className="tooltip">Move to In Progress</span>
                     </button>
                 )}
                 {task.status !== "Completed" && (
-                    <button onClick={() => handleStatusChange("Completed")}>
+                    <button className="relative group" onClick={() => handleStatusChange("Completed")}>
                         <FaCheckCircle className="text-green-500" />
+                        <span className="tooltip">Move to Completed</span>
                     </button>
                 )}
+                <button className="relative group" onClick={handleDelete}>
+                    <FaTrash className="text-red-500" />
+                    <span className="tooltip">Delete Task</span>
+                </button>
             </div>
         </div>
     );
