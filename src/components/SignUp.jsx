@@ -27,7 +27,7 @@ function Signup() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4">
+    <div className="max-w-md mx-auto mt-10 p-4 mb-16">
       <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded">
         <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Sign Up</h2>
         {error && (
