@@ -1,4 +1,4 @@
-// TaskCard.jsx
+
 import React from "react";
 import { updateTask, deleteTask } from "./Db";
 import { FaCheckCircle, FaSpinner, FaCircle, FaTrash } from "react-icons/fa";
@@ -27,18 +27,18 @@ function TaskCard({ task, onDelete, onUpdate }) {
                 {task.status !== "In Progress" && (
                     <button className="relative group" onClick={() => handleStatusChange("In Progress")}>
                         <FaSpinner className="text-blue-500" />
-                        <span className="tooltip">Move to In Progress</span>
+                        <span className="tooltip"> Progress </span>
                     </button>
                 )}
                 {task.status !== "Completed" && (
                     <button className="relative group" onClick={() => handleStatusChange("Completed")}>
                         <FaCheckCircle className="text-green-500" />
-                        <span className="tooltip">Move to Completed</span>
+                        <span className="tooltip"> Completed </span>
                     </button>
                 )}
                 <button className="relative group" onClick={handleDelete}>
                     <FaTrash className="text-red-500" />
-                    <span className="tooltip">Delete Task</span>
+                    <span className="tooltip"> Delete </span>
                 </button>
             </div>
         </div>

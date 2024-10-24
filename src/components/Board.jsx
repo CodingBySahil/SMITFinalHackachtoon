@@ -1,4 +1,4 @@
-// Board.jsx
+
 import React, { useState, useEffect } from "react";
 import { getTasksByStatus, addTask } from "./Db";
 import TaskCard from "./TaskCard";
